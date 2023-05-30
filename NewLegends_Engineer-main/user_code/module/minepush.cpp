@@ -72,8 +72,8 @@ void MinePush::init()
 {
     mine_RC = remote_control.get_remote_control_point();
     last_mine_RC = remote_control.get_last_remote_control_point();
-    minepush.photo_flag_yaw = 0;
-    minepush.photo_flag_pitch = 0;
+    photo_flag_yaw = 0;
+    photo_flag_pitch = 0;
 
     for (uint8_t i = 0; i < 4; ++i)
     {
@@ -165,15 +165,15 @@ void MinePush::behaviour_mode_set()
     last_mine_mode = mine_mode;
 
     //遥控器设置模式
-    if (switch_is_up(mine_RC->rc.s[MINE_MODE_CHANNEL])) //右拨杆上 开启push手动 无力底盘
+    if (switch_is_up(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //左拨杆上 开启push手动 无力底盘
     {
-        mine_behaviour_mode = MINE_OPEN;
+        mine_behaviour_mode = MINE_ZERO_FORCE;
     }
-    else if (switch_is_mid(mine_RC->rc.s[MINE_MODE_CHANNEL])) //右拨杆中
+    else if (switch_is_mid(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //右拨杆中
     {
-        mine_behaviour_mode =  MINE_ZERO_FORCE;
+        mine_behaviour_mode =  MINE_OPEN;
     }
-    else if (switch_is_down(mine_RC->rc.s[MINE_MODE_CHANNEL])) //右拨杆下
+    else if (switch_is_down(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //右拨杆下
     {
         mine_behaviour_mode = MINE_ZERO_FORCE;
     }
@@ -190,18 +190,18 @@ void MinePush::behaviour_mode_set()
 
 	if(mine_RC->mouse.z > 0&&mine_RC->key.v == KEY_PRESSED_OFFSET_Q)
 	{
-		minepush.photo_flag_yaw = 1;
+		photo_flag_yaw = 1;
 	}
 	if(mine_RC->mouse.z < 0&&mine_RC->key.v == KEY_PRESSED_OFFSET_Q)
 	{
-		minepush.photo_flag_yaw = 0;
+		photo_flag_yaw = 0;
 	}
 
-
-	if (minepush.photo_flag_yaw == 0)
+	if (photo_flag_yaw == 0)
 	{
 		photospin.yaw_state = EXCHANGE_MODE;
-	}else
+	}
+    else
 	{
 	    photospin.yaw_state = WALK_MODE;
 	}
@@ -210,17 +210,22 @@ void MinePush::behaviour_mode_set()
 
     if(mine_RC->key.v == KEY_PRESSED_OFFSET_R)
 	{
-		minepush.photo_flag_pitch ++;
+		photo_flag_pitch ++;
 	}
 	if(mine_RC->key.v == KEY_PRESSED_OFFSET_X)
 	{
-		minepush.photo_flag_pitch --;
+		photo_flag_pitch --;
 	}
-    if(minepush.photo_flag_pitch == 0){
+    if(photo_flag_pitch == 0)
+    {
         photospin.pitch_state = LOOK_UP;
-    }else if(photospin.pitch_state == 1){
+    }
+    else if(photospin.pitch_state == 1)
+    {
         photospin.pitch_state = LOOK_MID;
-    }else if(photospin.pitch_state == 2){
+    }
+    else if(photospin.pitch_state == 2)
+    {
         photospin.pitch_state = LOOK_DOWN;
     }
         //遥控器设置图传舵机模式
@@ -313,14 +318,10 @@ void MinePush::mine_open_set_control(fp32 *vx_set, fp32 *vy_set)
     {
         return;
     }
-    static int16_t mine_channel = 0, stretch_channel = 0;
+    static int16_t stretch_channel = 0;
 
-    rc_deadband_limit(mine_RC->rc.ch[MINE_X_CHANNEL], mine_channel, RC_DEADBAND);
-    // rc_deadband_limit(mine_RC->rc.ch[MINE_Y_CHANNEL], stretch_channel, RC_DEADBAND);
-
+    rc_deadband_limit(mine_RC->rc.ch[MINE_X_CHANNEL], stretch_channel, RC_DEADBAND);
     *vx_set = mine_RC->rc.ch[MINE_X_CHANNEL] / MINE_OPEN_RC_SCALE;
-    // *vy_set = -mine_RC->rc.ch[MINE_Y_CHANNEL] / MINE_OPEN_RC_SCALE;
-
 }
 
 
@@ -343,7 +344,6 @@ void MinePush::solve()
                 mine_motive_motor[i].speed_set = mine_motive_motor[i].min_speed;
             mine_motive_motor[i].current_give = mine_motive_motor[i].speed_pid.pid_calc();
         }
-        // raw控制直接返回
         return;
     }
     else if (mine_behaviour_mode == MINE_CLOSE)
@@ -352,7 +352,6 @@ void MinePush::solve()
         {
             motor_set_control(&mine_motive_motor[i]);
         }
-        //TODO:其实这里需要把两个2006只用速度环，伸出电机继续使用双环
     }
 }
 

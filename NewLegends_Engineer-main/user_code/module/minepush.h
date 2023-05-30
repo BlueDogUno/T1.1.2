@@ -20,9 +20,9 @@
 #define MINE_CONTROL_TIME_MS 2
 
 //前后的遥控器通道号码
-#define MINE_X_CHANNEL 0
+#define MINE_X_CHANNEL 2
 //左右的遥控器通道号码
-#define MINE_Y_CHANNEL 1//tudo
+#define MINE_Y_CHANNEL 1
 
 #define MINE_OPEN_RC_SCALE 100 // 遥控器乘以该比例发送到can上
 

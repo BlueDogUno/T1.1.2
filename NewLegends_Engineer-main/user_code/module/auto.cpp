@@ -95,11 +95,6 @@ void AUTO::motor_status_measure()
     else
         status_flag[MINE_STRETCH] = WAIT;
 
-    // 抬升，等待调试
-    // if (can_receive.lift_status == READY)
-    //     status_flag[MINE_STRETCH] = READY;
-    // else
-    //     status_flag[MINE_STRETCH] = WAIT;
 
 }
 
@@ -117,8 +112,14 @@ void AUTO::auto_control_set()
         minecatch.auto_control(&auto_mode);
         // else if (status_flag[MINE_STRETCH] != READY)
             // minepush.auto_control(&auto_mode);
-        // else if (status_flag[LIFT] != READY)
-            // 发送抬升等级
+    }
+    else if (if_key_singal_pessed(auto_RC, last_auto_RC, KEY_PRESSED_STANDARD_STATE))
+    {
+        auto_mode = CATCH_STANDARD;
+        // if (status_flag[MINE_SPIN] != READY || status_flag[MINE_YAW] != READY || status_flag[MINE_SUCTION] != READY)
+        minecatch.auto_control(&auto_mode);
+        // else if (status_flag[MINE_STRETCH] != READY)
+            // minepush.auto_control(&auto_mode);
     }
     else if (if_key_singal_pessed(auto_RC, last_auto_RC, KEY_PRESSED_SKY_STATE))
     {
@@ -127,8 +128,6 @@ void AUTO::auto_control_set()
         minecatch.auto_control(&auto_mode);
         // else if (status_flag[MINE_STRETCH] != READY)
             // minepush.auto_control(&auto_mode);
-        // else if (status_flag[LIFT] != READY)
-            // 发送抬升等级
     }
 
 }

@@ -22,20 +22,16 @@
 #define CATCH_CONTROL_TIME_MS 2
 
 //前后的遥控器通道号码
-#define CATCH_X_CHANNEL 3 //pitch flip
+#define CATCH_X_CHANNEL 1 //pitch flip
 //左右的遥控器通道号码
 #define CATCH_Y_CHANNEL 0 //yaw
 //
-#define CATCH_Z_CHANNEL 3 //roll
+#define CATCH_Z_CHANNEL 2 //roll
 
 #define CATCH_OPEN_RC_SCALE 300 // rz遥控器除以该比例发送到can上
 
 //选择取矿机构状态 开关通道号
-#define FLIP_ROLL_MODE_CHANNEL   0
-#define YAW_MODE_CHANNEL 1
-//选择取矿机构状态 开关通道号
-#define STRETCH_MODE_CHANNEL 0
-
+#define CATCH_MODE_CHANNEL 1
 
 //拨矿电机速度环PID     翻爪flip左    需要的力有些大
 #define FLIP_L_MOTOR_SPEED_PID_KP 1000.0f
@@ -186,11 +182,6 @@ public:
 
     catch_behaviour_e catch_behaviour_mode; //抓取机构行为状态机
     catch_behaviour_e last_catch_behaviour_mode; //抓取机构上次行为状态机
-    catch_behaviour_e flip_roll_behaviour_mode;
-    catch_behaviour_e yaw_behaviour_mode;
-    catch_behaviour_e last_flip_roll_behaviour_mode;
-    catch_behaviour_e last_yaw_behaviour_mode;
-
 
     catch_mode_e catch_mode; //抓取机构控制状态机
     catch_mode_e last_catch_mode; //抓取机构上次控制状态机
@@ -201,9 +192,6 @@ public:
     uint8_t motor_status[MOTOR_NUM];
     fp32 catch_hold_angle[4];
 
-    bool_t yaw_state;
-    bool_t roll_state;
-    bool_t flip_state; 
     
     void init();
 

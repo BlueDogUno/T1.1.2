@@ -22,7 +22,6 @@ void mine_task(void *pvParameters)
 
     while(true) 
     { 
-        
         //设置模式
         minepush.set_mode();
         minecatch.set_mode();
@@ -30,17 +29,10 @@ void mine_task(void *pvParameters)
         minepush.feedback_update();
         minecatch.feedback_update();
         //设置控制量
-        if (minepush.mine_mode == MINE_AUTO)
-        {
-            Auto.motor_status_measure();
-            Auto.auto_control_set();
-        }
-        else
-        {
-            minepush.set_control();
-            minecatch.set_control();
-        }
-        
+        Auto.motor_status_measure();
+        Auto.auto_control_set();
+        minepush.set_control();
+        minecatch.set_control();
         //解算
         minepush.solve();
         minecatch.solve();

@@ -14,15 +14,14 @@
 
 /*---------------------按键---------------------------*/
 
-#define KEY_PRESSED_STRETCH_STATE  'E'
-//一键空接模式
-#define KEY_PRESSED_SKY_STATE      'Q'
+
 
 //初始模式 单击G
-#define KEY_PRESSED_INIT_STATE     'G'
-
+#define KEY_PRESSED_INIT_STATE     'Z'
 //资源岛
-#define KEY_PRESSED_STANDARD_STATE     'G'
+#define KEY_PRESSED_STANDARD_STATE     'X'
+//一键空接模式
+#define KEY_PRESSED_SKY_STATE      'C'
 
 //地矿
 #define KEY_PRESSED_GROUND_STATE     'G'
