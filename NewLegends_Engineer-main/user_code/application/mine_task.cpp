@@ -18,7 +18,7 @@ void mine_task(void *pvParameters)
     vTaskDelay(MINEPUSH_TASK_INIT_TIME);
     minepush.init();
     minecatch.init();
-    //Auto.init();
+    Auto.init();
 
     while(true) 
     { 

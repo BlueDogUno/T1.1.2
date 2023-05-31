@@ -68,9 +68,6 @@ void Communicate::run()
     s0 = remote_control.rc_ctrl.rc.s[0];
     s1 = remote_control.rc_ctrl.rc.s[1];
 
-    yaw_state = minecatch.yaw_state;
-    roll_state = minecatch.roll_state;
-    flip_state = minecatch.flip_state;
 
 
 

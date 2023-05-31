@@ -85,37 +85,37 @@ void Catch::init()
 
     //翻爪左
     fp32 flip_l_speed_pid_parm[5] = {FLIP_L_MOTOR_SPEED_PID_KP, FLIP_L_MOTOR_SPEED_PID_KI, FLIP_L_MOTOR_SPEED_PID_KD, FLIP_L_MOTOR_SPEED_PID_MAX_IOUT, FLIP_L_MOTOR_SPEED_PID_MAX_OUT};
-    catch_motive_motor[0].speed_pid.init(PID_SPEED, flip_l_speed_pid_parm, &catch_motive_motor[1].speed, &catch_motive_motor[1].speed_set, NULL);
+    catch_motive_motor[0].speed_pid.init(PID_SPEED, flip_l_speed_pid_parm, &catch_motive_motor[0].speed, &catch_motive_motor[0].speed_set, NULL);
     catch_motive_motor[0].speed_pid.pid_clear();
 
     fp32 flip_l_angle_pid_parm[5] = {FLIP_L_MOTOR_ANGLE_PID_KP, FLIP_L_MOTOR_ANGLE_PID_KI, FLIP_L_MOTOR_ANGLE_PID_KD, FLIP_L_MOTOR_ANGLE_PID_MAX_IOUT, FLIP_L_MOTOR_ANGLE_PID_MAX_OUT};
-    catch_motive_motor[0].angle_pid.init(PID_ANGLE, flip_l_angle_pid_parm, &catch_motive_motor[1].total_angle , &catch_motive_motor[1].angle_set, 0);
+    catch_motive_motor[0].angle_pid.init(PID_ANGLE, flip_l_angle_pid_parm, &catch_motive_motor[0].total_angle , &catch_motive_motor[0].angle_set, 0);
     catch_motive_motor[0].angle_pid.pid_clear();
     //翻爪右
     fp32 flip_r_speed_pid_parm[5] = {FLIP_R_MOTOR_SPEED_PID_KP, FLIP_R_MOTOR_SPEED_PID_KI, FLIP_R_MOTOR_SPEED_PID_KD, FLIP_R_MOTOR_SPEED_PID_MAX_IOUT, FLIP_R_MOTOR_SPEED_PID_MAX_OUT};
-    catch_motive_motor[1].speed_pid.init(PID_SPEED, flip_r_speed_pid_parm, &catch_motive_motor[2].speed, &catch_motive_motor[2].speed_set, NULL);
+    catch_motive_motor[1].speed_pid.init(PID_SPEED, flip_r_speed_pid_parm, &catch_motive_motor[1].speed, &catch_motive_motor[1].speed_set, NULL);
     catch_motive_motor[1].speed_pid.pid_clear();
 
     fp32 flip_r_angle_pid_parm[5] = {FLIP_R_MOTOR_ANGLE_PID_KP, FLIP_R_MOTOR_ANGLE_PID_KI, FLIP_R_MOTOR_ANGLE_PID_KD, FLIP_R_MOTOR_ANGLE_PID_MAX_IOUT, FLIP_R_MOTOR_ANGLE_PID_MAX_OUT};
-    catch_motive_motor[1].angle_pid.init(PID_ANGLE, flip_r_angle_pid_parm, &catch_motive_motor[2].total_angle , &catch_motive_motor[2].angle_set, 0);
+    catch_motive_motor[1].angle_pid.init(PID_ANGLE, flip_r_angle_pid_parm, &catch_motive_motor[1].total_angle , &catch_motive_motor[1].angle_set, 0);
     catch_motive_motor[1].angle_pid.pid_clear();
 
     //yaw轴
     fp32 yaw_speed_pid_parm[5] = {YAW_MOTOR_SPEED_PID_KP, YAW_MOTOR_SPEED_PID_KI, YAW_MOTOR_SPEED_PID_KD, YAW_MOTOR_SPEED_PID_MAX_IOUT, YAW_MOTOR_SPEED_PID_MAX_OUT};
-    catch_motive_motor[2].speed_pid.init(PID_SPEED, yaw_speed_pid_parm, &catch_motive_motor[3].speed, &catch_motive_motor[3].speed_set, NULL);
+    catch_motive_motor[2].speed_pid.init(PID_SPEED, yaw_speed_pid_parm, &catch_motive_motor[2].speed, &catch_motive_motor[2].speed_set, NULL);
     catch_motive_motor[2].speed_pid.pid_clear();
 
     fp32 yaw_angle_pid_parm[5] = {YAW_MOTOR_ANGLE_PID_KP, YAW_MOTOR_ANGLE_PID_KI, YAW_MOTOR_ANGLE_PID_KD, YAW_MOTOR_ANGLE_PID_MAX_IOUT, YAW_MOTOR_ANGLE_PID_MAX_OUT};
-    catch_motive_motor[2].angle_pid.init(PID_ANGLE, yaw_angle_pid_parm, &catch_motive_motor[3].total_angle , &catch_motive_motor[3].angle_set, 0);
+    catch_motive_motor[2].angle_pid.init(PID_ANGLE, yaw_angle_pid_parm, &catch_motive_motor[2].total_angle , &catch_motive_motor[2].angle_set, 0);
     catch_motive_motor[2].angle_pid.pid_clear();
 
     //roll轴
     fp32 roll_speed_pid_parm[5] = {PITCH_MOTOR_SPEED_PID_KP, PITCH_MOTOR_SPEED_PID_KI, PITCH_MOTOR_SPEED_PID_KD, PITCH_MOTOR_SPEED_PID_MAX_IOUT, PITCH_MOTOR_SPEED_PID_MAX_OUT};
-    catch_motive_motor[3].speed_pid.init(PID_SPEED, roll_speed_pid_parm, &catch_motive_motor[4].speed, &catch_motive_motor[4].speed_set, NULL);
+    catch_motive_motor[3].speed_pid.init(PID_SPEED, roll_speed_pid_parm, &catch_motive_motor[3].speed, &catch_motive_motor[3].speed_set, NULL);
     catch_motive_motor[3].speed_pid.pid_clear();
 
     fp32 roll_angle_pid_parm[5] = {PITCH_MOTOR_ANGLE_PID_KP, PITCH_MOTOR_ANGLE_PID_KI, PITCH_MOTOR_ANGLE_PID_KD, PITCH_MOTOR_ANGLE_PID_MAX_IOUT, PITCH_MOTOR_ANGLE_PID_MAX_OUT};
-    catch_motive_motor[3].angle_pid.init(PID_ANGLE, roll_angle_pid_parm, &catch_motive_motor[4].total_angle , &catch_motive_motor[4].angle_set, 0);
+    catch_motive_motor[3].angle_pid.init(PID_ANGLE, roll_angle_pid_parm, &catch_motive_motor[3].total_angle , &catch_motive_motor[3].angle_set, 0);
     catch_motive_motor[3].angle_pid.pid_clear();
 
     // 电机软件限位，需要测试后开启
@@ -124,20 +124,20 @@ void Catch::init()
     //更新一下数据
     feedback_update();
     moto_start_angle[CAN_CATCH_YAW_MOTOR] = catch_motive_motor[CAN_CATCH_YAW_MOTOR].total_angle;
-    catch_motive_motor[CAN_CATCH_YAW_MOTOR].max_angle = moto_start_angle[CAN_CATCH_YAW_MOTOR] + YAW_LIMIT_ANGLE;
-    catch_motive_motor[CAN_CATCH_YAW_MOTOR].min_angle = moto_start_angle[CAN_CATCH_YAW_MOTOR] - YAW_LIMIT_ANGLE;
+    catch_motive_motor[CAN_CATCH_YAW_MOTOR].max_angle =  + YAW_LIMIT_ANGLE;
+    catch_motive_motor[CAN_CATCH_YAW_MOTOR].min_angle =  - YAW_LIMIT_ANGLE;
     
     moto_start_angle[CAN_CATCH_SUCTION_MOTOR] = catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].total_angle;
-    catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].max_angle = moto_start_angle[CAN_CATCH_SUCTION_MOTOR] + SUCTION_LIMIT_ANGLE;
-    catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].min_angle = moto_start_angle[CAN_CATCH_SUCTION_MOTOR] - SUCTION_LIMIT_ANGLE;
+    catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].max_angle =  + SUCTION_LIMIT_ANGLE;
+    catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].min_angle =  - SUCTION_LIMIT_ANGLE;
 
     moto_start_angle[CAN_SPIN_L_MOTOR] = catch_motive_motor[CAN_SPIN_L_MOTOR].total_angle;
-    catch_motive_motor[CAN_SPIN_L_MOTOR].max_angle = moto_start_angle[CAN_SPIN_L_MOTOR] + SPIN_LIMIT_ANGLE;
-    catch_motive_motor[CAN_SPIN_L_MOTOR].min_angle = moto_start_angle[CAN_SPIN_L_MOTOR] - SPIN_LIMIT_ANGLE;
+    catch_motive_motor[CAN_SPIN_L_MOTOR].max_angle = + SPIN_LIMIT_ANGLE;
+    catch_motive_motor[CAN_SPIN_L_MOTOR].min_angle =  - SPIN_LIMIT_ANGLE;
 
     moto_start_angle[CAN_SPIN_R_MOTOR] = catch_motive_motor[CAN_SPIN_R_MOTOR].total_angle;
-    catch_motive_motor[CAN_SPIN_R_MOTOR].max_angle = moto_start_angle[CAN_SPIN_R_MOTOR] + SPIN_LIMIT_ANGLE;
-    catch_motive_motor[CAN_SPIN_R_MOTOR].min_angle = moto_start_angle[CAN_SPIN_R_MOTOR] - SPIN_LIMIT_ANGLE;
+    catch_motive_motor[CAN_SPIN_R_MOTOR].max_angle = + SPIN_LIMIT_ANGLE;
+    catch_motive_motor[CAN_SPIN_R_MOTOR].min_angle = - SPIN_LIMIT_ANGLE;
 }
 
 /**
@@ -154,7 +154,7 @@ void Catch::feedback_update(){
     {
         //更新动力电机速度
         catch_motive_motor[i].speed = CATCH_MOTOR_RPM_TO_VECTOR_SEN * catch_motive_motor[i].motor_measure->speed_rpm;
-        catch_motive_motor[i].total_angle = catch_motive_motor[i].motor_measure->total_angle;
+        catch_motive_motor[i].total_angle = catch_motive_motor[i].motor_measure->total_angle - moto_start_angle[i];
         catch_motive_motor[i].angle_error = catch_motive_motor[i].total_angle - catch_motive_motor[i].angle_set;
         if (catch_motive_motor[i].angle_error < ANGLE_ERR_TOLERANT &&  catch_motive_motor[i].angle_error > -ANGLE_ERR_TOLERANT)
             motor_status[i] = READY;
@@ -196,6 +196,11 @@ void Catch::behaviour_mode_set()
     {
         catch_behaviour_mode = CATCH_HOLD;
     }
+    if (switch_is_down(catch_RC->rc.s[0])) //右拨杆下
+    {
+        catch_behaviour_mode = CATCH_ZERO_FORCE;
+    }
+
 
     //根据行为模式选择一个控制模式
     if (catch_behaviour_mode == CATCH_ZERO_FORCE || catch_behaviour_mode == CATCH_OPEN)
@@ -374,13 +379,13 @@ void Catch::motor_set_control(Mine_motor *motor)
 
 void Catch::motor_angle_limit(Mine_motor *motor)
 {
-    if (motor->total_angle < motor->min_angle)
+    if (motor->angle_set < motor->min_angle)
     {
-        motor->total_angle = motor->min_angle;
+        motor->angle_set = motor->min_angle;
     }
-    else if (motor->total_angle > motor->max_angle)
+    else if (motor->angle_set > motor->max_angle)
     {
-        motor->total_angle = motor->max_angle;
+        motor->angle_set = motor->max_angle;
     }
 }
 
@@ -402,10 +407,10 @@ void Catch::auto_control(auto_mode_e *auto_mode)
         {
             static int AUTO_MODE;
             AUTO_MODE = *auto_mode - CATCH_INIT;
-            catch_motive_motor[CAN_SPIN_L_MOTOR].angle_set = moto_start_angle[CAN_SPIN_L_MOTOR] + ROTATE_ANGLE[AUTO_MODE][SPIN_MOTOR];
-            catch_motive_motor[CAN_SPIN_R_MOTOR].angle_set = moto_start_angle[CAN_SPIN_R_MOTOR] - ROTATE_ANGLE[AUTO_MODE][SPIN_MOTOR];
-            catch_motive_motor[CAN_CATCH_YAW_MOTOR].angle_set = moto_start_angle[CAN_CATCH_YAW_MOTOR] + ROTATE_ANGLE[AUTO_MODE][YAW_MOTOR];
-            catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].angle_set = moto_start_angle[CAN_CATCH_SUCTION_MOTOR] + ROTATE_ANGLE[AUTO_MODE][SUCTION_MOTOR];
+            catch_motive_motor[CAN_SPIN_L_MOTOR].angle_set = + ROTATE_ANGLE[AUTO_MODE][SPIN_MOTOR];
+            catch_motive_motor[CAN_SPIN_R_MOTOR].angle_set = - ROTATE_ANGLE[AUTO_MODE][SPIN_MOTOR];
+            catch_motive_motor[CAN_CATCH_YAW_MOTOR].angle_set = - ROTATE_ANGLE[AUTO_MODE][YAW_MOTOR];
+            catch_motive_motor[CAN_CATCH_SUCTION_MOTOR].angle_set = + ROTATE_ANGLE[AUTO_MODE][SUCTION_MOTOR];
         }
     }
 }

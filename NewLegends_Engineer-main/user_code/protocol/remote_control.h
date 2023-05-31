@@ -91,7 +91,7 @@ bool_t if_mouse_pessed(const RC_ctrl_t *_rc_ctrl, char mouse_num);
 //是否单击鼠标
 bool_t if_mouse_singal_pessed(const RC_ctrl_t *_rc_ctrl, const RC_ctrl_t *_last_rc_ctrl, char mouse_num);
 //是否按下对应按键
-uint16_t if_key_pessed(const RC_ctrl_t *_rc_ctrl, char key_num);
+bool_t if_key_pessed(const RC_ctrl_t *_rc_ctrl, char key_num);
 //是否单击对于按键
 bool_t if_key_singal_pessed(const RC_ctrl_t *_rc_ctrl, const RC_ctrl_t *_last_rc_ctrl, char key_num);
 /* ----------------------- Internal Data ----------------------------------- */
