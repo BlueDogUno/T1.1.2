@@ -84,7 +84,7 @@ int main(void)
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 
-   HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -122,7 +122,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start(&htim1);
+	HAL_TIM_Base_Start(&htim5);
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

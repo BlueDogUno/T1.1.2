@@ -176,7 +176,7 @@ void Can_receive::send_high_state_com(bool_t stretch_state , bool_t yaw_state, b
 
 }
 
-void Can_receive::send_ss_state_com(uint8_t s0, uint8_t s1,int16_t ch1){
+void Can_receive::send_ss_state_com(uint8_t s0, uint8_t s1,int16_t ch1,bool_t sucker_flag){
 
     top_send.s0 = s0;
     top_send.s1 = s1;
@@ -191,7 +191,7 @@ void Can_receive::send_ss_state_com(uint8_t s0, uint8_t s1,int16_t ch1){
     can_send_data[1] = s1;
     can_send_data[2] = ch1 >> 8;
     can_send_data[3] = ch1;
-    can_send_data[4] = 0;
+    can_send_data[4] = sucker_flag;
     can_send_data[5] = 0;
     can_send_data[6] = 0;
     can_send_data[7] = 0;

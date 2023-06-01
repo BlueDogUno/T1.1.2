@@ -62,6 +62,7 @@ void AUTO::init()
 {
     auto_mode = CATCH_INIT;
     last_auto_mode = auto_mode;
+    minecatch.auto_control(&auto_mode);
     auto_RC = remote_control.get_remote_control_point();
     last_auto_RC = remote_control.get_last_remote_control_point();
 }
@@ -105,23 +106,23 @@ void AUTO::motor_status_measure()
  */
 void AUTO::auto_control_set()
 {
-    if (if_key_singal_pessed(auto_RC, last_auto_RC, KEY_PRESSED_INIT_STATE))
+    if (if_key_pessed(auto_RC, KEY_PRESSED_INIT_STATE))
     {
         auto_mode = CATCH_INIT;
         // if (status_flag[MINE_SPIN] != READY || status_flag[MINE_YAW] != READY || status_flag[MINE_SUCTION] != READY)
         minecatch.auto_control(&auto_mode);
         // else if (status_flag[MINE_STRETCH] != READY)
-            // minepush.auto_control(&auto_mode);
+        minepush.auto_control(&auto_mode);
     }
-    else if (if_key_singal_pessed(auto_RC, last_auto_RC, KEY_PRESSED_STANDARD_STATE))
+    else if (if_key_pessed(auto_RC, KEY_PRESSED_STANDARD_STATE))
     {
         auto_mode = CATCH_STANDARD;
         // if (status_flag[MINE_SPIN] != READY || status_flag[MINE_YAW] != READY || status_flag[MINE_SUCTION] != READY)
         minecatch.auto_control(&auto_mode);
         // else if (status_flag[MINE_STRETCH] != READY)
-            // minepush.auto_control(&auto_mode);
+        minepush.auto_control(&auto_mode);
     }
-    else if (if_key_singal_pessed(auto_RC, last_auto_RC, KEY_PRESSED_SKY_STATE))
+    else if (if_key_pessed(auto_RC, KEY_PRESSED_SKY_STATE))
     {
         auto_mode = CATCH_SKY;
         // if (status_flag[MINE_SPIN] != READY || status_flag[MINE_YAW] != READY || status_flag[MINE_SUCTION] != READY)

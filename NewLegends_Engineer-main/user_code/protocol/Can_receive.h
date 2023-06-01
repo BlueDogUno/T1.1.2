@@ -123,8 +123,7 @@ public:
   void send_high_state_com(bool_t stretch_state , bool_t yaw_state, bool_t roll_state, bool_t flip_state);
 
   //发送拨杆数据
-  void send_ss_state_com(uint8_t s0, uint8_t s1,int16_t ch1);
-  // void send_ss_state_com(uint8_t s0, uint8_t s1);
+  void send_ss_state_com(uint8_t s0, uint8_t s1,int16_t ch1,bool_t sucker_flag);  // void send_ss_state_com(uint8_t s0, uint8_t s1);
 
   //发送底盘自动抬升行为状态
   void send_lift_auto_mode(int8_t auto_mode);

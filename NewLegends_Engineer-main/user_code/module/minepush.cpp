@@ -72,8 +72,7 @@ void MinePush::init()
 {
     mine_RC = remote_control.get_remote_control_point();
     last_mine_RC = remote_control.get_last_remote_control_point();
-    photo_flag_yaw = 0;
-    photo_flag_pitch = 0;
+    photospin.sucker_flag = 0;
 
     for (uint8_t i = 0; i < 4; ++i)
     {
@@ -98,7 +97,6 @@ void MinePush::init()
         stretch_moto_start_angle[i] = mine_motive_motor[i].total_angle;
         mine_motive_motor[i].max_speed = NORMAL_MAX_STRETCH_SPEED;
         mine_motive_motor[i].min_speed = -NORMAL_MAX_STRETCH_SPEED;
-        mine_motive_motor[i].angle_error = mine_motive_motor[i].total_angle - mine_motive_motor[i].angle_set;
         motor_status[i] = WAIT;
     }
 
@@ -109,9 +107,9 @@ void MinePush::init()
     // mine_motive_motor[MINE_STRETCH_R_ID].max_angle = stretch_moto_start_angle[MINE_STRETCH_R_ID];
     // mine_motive_motor[MINE_STRETCH_R_ID].min_angle = stretch_moto_start_angle[MINE_STRETCH_R_ID] - STRENTCH_LIMIT_ANGLE;
     
+    photospin.yaw_flag = 1;
+    photospin.pitch_flag = 1;
     //更新一下数据
-    HAL_TIM_Base_Start(&htim1);
-	HAL_TIM_Base_Start(&htim5);
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
     photospin.yaw_state = WALK_MODE;
@@ -132,16 +130,13 @@ void MinePush::feedback_update(){
     {
         //更新动力电机速度，加速度是速度的PID微分
         mine_motive_motor[i].speed = MINE_MOTOR_RPM_TO_VECTOR_SEN * mine_motive_motor[i].motor_measure->speed_rpm;
-        mine_motive_motor[i].total_angle = mine_motive_motor[i].motor_measure->total_angle;
-    }
-    for (uint8_t i = 0; i < 4; ++i)
-    {
+        mine_motive_motor[i].total_angle = mine_motive_motor[i].motor_measure->total_angle - stretch_moto_start_angle[i];
+        mine_motive_motor[i].angle_error = mine_motive_motor[i].total_angle - mine_motive_motor[i].angle_set;
         if (mine_motive_motor[i].angle_error < ANGLE_ERR_TOLERANT && mine_motive_motor[i].angle_error > -ANGLE_ERR_TOLERANT)
             motor_status[i] = READY;
         else
             motor_status[i] = WAIT;
     }
-    // 这两个变量暂时没有用到，目的是为了伸出一半还能收回
     
 }
 
@@ -169,11 +164,11 @@ void MinePush::behaviour_mode_set()
     {
         mine_behaviour_mode = MINE_ZERO_FORCE;
     }
-    else if (switch_is_mid(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //右拨杆中
+    else if (switch_is_mid(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //左拨杆中
     {
         mine_behaviour_mode =  MINE_OPEN;
     }
-    else if (switch_is_down(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //右拨杆下
+    else if (switch_is_down(mine_RC->rc.s[STRETCH_MODE_CHANNEL])) //左拨杆下
     {
         mine_behaviour_mode = MINE_ZERO_FORCE;
     }
@@ -188,16 +183,18 @@ void MinePush::behaviour_mode_set()
         mine_mode = MINE_AUTO;
     }
 
-	if(mine_RC->mouse.z > 0&&mine_RC->key.v == KEY_PRESSED_OFFSET_Q)
-	{
-		photo_flag_yaw = 1;
-	}
-	if(mine_RC->mouse.z < 0&&mine_RC->key.v == KEY_PRESSED_OFFSET_Q)
-	{
-		photo_flag_yaw = 0;
-	}
 
-	if (photo_flag_yaw == 0)
+
+	if(if_key_pessed(mine_RC, '!') && if_key_pessed(mine_RC, 'Q'))//按q切换图传位置
+    {
+        photospin.yaw_flag = 0;
+    }
+    else if (if_key_pessed(mine_RC, '!') && if_key_pessed(mine_RC, 'E'))
+    {
+        photospin.yaw_flag = 1;
+    }
+
+	if (photospin.yaw_flag == 0)
 	{
 		photospin.yaw_state = EXCHANGE_MODE;
 	}
@@ -206,25 +203,60 @@ void MinePush::behaviour_mode_set()
 	    photospin.yaw_state = WALK_MODE;
 	}
 
+    // if(if_key_pessed(mine_RC, 'R') && if_key_pessed(mine_RC, 'Q'))//按q切换图传位置
+    // {
+    //     photospin.pitch_flag ++ ;
+    // }
+    // else if (if_key_pessed(mine_RC, 'R') && if_key_pessed(mine_RC, 'E'))
+    // {
+    //     photospin.pitch_flag --;
+    // }
+
+	// if (photospin.pitch_flag == 0)
+	// {
+	// 	photospin.pitch_flag = EXCHANLOOK_UPGE_MODE;
+	// }
+    // else
+	// {
+	//     photospin.pitch_flag = WALK_MODE;
+    if(if_key_pessed(mine_RC, '!') && if_key_pessed(mine_RC, 'F'))//开气泵
+    {
+        photospin.sucker_flag = 0;
+    }
+    else if (if_key_pessed(mine_RC, '!') && if_key_pessed(mine_RC, 'G'))
+    {
+        photospin.sucker_flag = 1;
+    }
+	// }
 
 
-    if(mine_RC->key.v == KEY_PRESSED_OFFSET_R)
+
+    if(if_key_pessed(mine_RC, '$') && if_key_pessed(mine_RC, 'Q'))
 	{
-		photo_flag_pitch ++;
+		photospin.pitch_flag ++;
+        if (photospin.pitch_flag > 2)
+            photospin.pitch_flag = 2;
+        if (photospin.pitch_flag < 0)
+            photospin.pitch_flag = 0;
 	}
-	if(mine_RC->key.v == KEY_PRESSED_OFFSET_X)
+	else if(if_key_pessed(mine_RC, '$') && if_key_pessed(mine_RC, 'E'))
 	{
-		photo_flag_pitch --;
+		photospin.pitch_flag --;
+        if (photospin.pitch_flag > 2)
+            photospin.pitch_flag = 2;
+        if (photospin.pitch_flag < 0)
+            photospin.pitch_flag = 0;
 	}
-    if(photo_flag_pitch == 0)
+
+    if(photospin.pitch_flag == 0)
     {
         photospin.pitch_state = LOOK_UP;
     }
-    else if(photospin.pitch_state == 1)
+    else if(photospin.pitch_flag == 1)
     {
         photospin.pitch_state = LOOK_MID;
     }
-    else if(photospin.pitch_state == 2)
+    else if(photospin.pitch_flag == 2)
     {
         photospin.pitch_state = LOOK_DOWN;
     }
@@ -258,19 +290,15 @@ void MinePush::set_control()
     //TODO:暂时只用到两个通道值，分别控制拨矿电机和伸爪电机
     //vmine_set控制拨矿电机速度，vstretch_set控制伸爪电机速度
     fp32 vmine_set = 0.0f, vstretch_set = 0.0f;
-    fp32 angle_set = 0;
+    fp32 angle_set = 0.0f;
 
     //获取控制设置值
     behaviour_control_set(&vmine_set, &vstretch_set);
 
     if (mine_mode == MINE_HAND)
     {
-        mine_motive_motor[MINE_PUSH_LEFT_ID].speed_set = vmine_set;
-        mine_motive_motor[MINE_PUSH_RIGHT_ID].speed_set = -1*vmine_set;
-        mine_motive_motor[MINE_STRETCH_L_ID].speed_set = vstretch_set;
-        mine_motive_motor[MINE_STRETCH_R_ID].speed_set = -1*vstretch_set;
-        // mine_motive_motor[MINE_PUSH_LEFT_ID].speed_set = 2;
-        // mine_motive_motor[MINE_PUSH_RIGHT_ID].speed_set = 2;
+        mine_motive_motor[MINE_STRETCH_L_ID].angle_set += vstretch_set;
+        mine_motive_motor[MINE_STRETCH_R_ID].angle_set += -1*vstretch_set;
     }
     
 }
@@ -321,7 +349,7 @@ void MinePush::mine_open_set_control(fp32 *vx_set, fp32 *vy_set)
     static int16_t stretch_channel = 0;
 
     rc_deadband_limit(mine_RC->rc.ch[MINE_X_CHANNEL], stretch_channel, RC_DEADBAND);
-    *vx_set = mine_RC->rc.ch[MINE_X_CHANNEL] / MINE_OPEN_RC_SCALE;
+    *vy_set = mine_RC->rc.ch[MINE_X_CHANNEL] / MINE_OPEN_RC_SCALE;
 }
 
 
@@ -332,26 +360,9 @@ void MinePush::mine_open_set_control(fp32 *vx_set, fp32 *vy_set)
  */
 void MinePush::solve()
 {
-
-    if (mine_behaviour_mode == MINE_OPEN)
+    for (int i = 0; i < 4; i++)
     {
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (mine_motive_motor[i].speed_set > mine_motive_motor[i].max_speed)
-                mine_motive_motor[i].speed_set = mine_motive_motor[i].max_speed;
-            if (mine_motive_motor[i].speed_set < mine_motive_motor[i].min_speed)
-                mine_motive_motor[i].speed_set = mine_motive_motor[i].min_speed;
-            mine_motive_motor[i].current_give = mine_motive_motor[i].speed_pid.pid_calc();
-        }
-        return;
-    }
-    else if (mine_behaviour_mode == MINE_CLOSE)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            motor_set_control(&mine_motive_motor[i]);
-        }
+        motor_set_control(&mine_motive_motor[i]);
     }
 }
 
@@ -372,8 +383,8 @@ void MinePush::output()
     // can_receive.can_cmd_mine_motive_motor(mine_motive_motor[MINE_STRETCH_L_ID].current_give, mine_motive_motor[MINE_STRETCH_R_ID].current_give,
     //                                       mine_motive_motor[MINE_PUSH_LEFT_ID].current_give, mine_motive_motor[MINE_PUSH_RIGHT_ID].current_give);
     can_receive.can_cmd_mine_motive_motor(0, 0,
-                                          mine_motive_motor[MINE_PUSH_LEFT_ID].current_give, mine_motive_motor[MINE_PUSH_RIGHT_ID].current_give);
-
+                                          mine_motive_motor[MINE_STRETCH_L_ID].current_give, mine_motive_motor[MINE_STRETCH_R_ID].current_give);
+    // can_receive.can_cmd_mine_motive_motor(0,0,0,0);
 }
 
 /**
@@ -416,23 +427,21 @@ void MinePush::auto_control(auto_mode_e *auto_mode)
             static int AUTO_MODE;
             
             AUTO_MODE = *auto_mode - CATCH_INIT;
-            mine_motive_motor[MINE_PUSH_LEFT_ID].angle_set = stretch_moto_start_angle[MINE_PUSH_LEFT_ID] + STRETCH_LEN[AUTO_MODE];
-            mine_motive_motor[MINE_PUSH_RIGHT_ID].angle_set = stretch_moto_start_angle[MINE_PUSH_RIGHT_ID] - STRETCH_LEN[AUTO_MODE];
+            mine_motive_motor[MINE_STRETCH_L_ID].angle_set = - STRETCH_LEN[AUTO_MODE];
+            mine_motive_motor[MINE_STRETCH_R_ID].angle_set = + STRETCH_LEN[AUTO_MODE];
         }
     }
 }
 
 void PhotoSpin::output(){
-    if(photospin.yaw_state == EXCHANGE_MODE){
-
+    if(photospin.yaw_state == EXCHANGE_MODE)
+    {
         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, yaw_exchange_data);
-
-    }else if (photospin.yaw_state == WALK_MODE){
-
-        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, yaw_walk_data);
-
     }
-
+    else if (photospin.yaw_state == WALK_MODE)
+    {
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, yaw_walk_data);
+    }
 
     if(photospin.pitch_state == LOOK_UP){
 

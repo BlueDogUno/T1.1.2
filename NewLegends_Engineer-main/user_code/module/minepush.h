@@ -24,7 +24,7 @@
 //左右的遥控器通道号码
 #define MINE_Y_CHANNEL 1
 
-#define MINE_OPEN_RC_SCALE 100 // 遥控器乘以该比例发送到can上
+#define MINE_OPEN_RC_SCALE 300 // 遥控器乘以该比例发送到can上
 
 //选择取矿机构状态 开关通道号
 #define MINE_MODE_CHANNEL 1
@@ -34,14 +34,14 @@
 #define PHOTO_MODE_CHANNEL 1        //左拨杆
 
 //拨矿电机速度环PID
-#define MOTIVE_MOTOR_SPEED_PID_KP 4000.0f
-#define MOTIVE_MOTOR_SPEED_PID_KI 0.0f
-#define MOTIVE_MOTOR_SPEED_PID_KD 0.1f
-#define MOTIVE_MOTOR_SPEED_PID_MAX_IOUT 2.0f
-#define MOTIVE_MOTOR_SPEED_PID_MAX_OUT 8000.0f
+#define MOTIVE_MOTOR_SPEED_PID_KP 100.0f
+#define MOTIVE_MOTOR_SPEED_PID_KI 200.0f
+#define MOTIVE_MOTOR_SPEED_PID_KD 0.0f
+#define MOTIVE_MOTOR_SPEED_PID_MAX_IOUT 4000.0f
+#define MOTIVE_MOTOR_SPEED_PID_MAX_OUT 5000.0f
 
 //拨矿电机角度环PID
-#define MOTIVE_MOTOR_ANGLE_PID_KP 20.0f 
+#define MOTIVE_MOTOR_ANGLE_PID_KP 2.0f 
 #define MOTIVE_MOTOR_ANGLE_PID_KI 0.0f
 #define MOTIVE_MOTOR_ANGLE_PID_KD 2000.0f
 #define MOTIVE_MOTOR_ANGLE_PID_MAX_IOUT 1.0f
@@ -79,11 +79,12 @@
 
 typedef enum
 {
-    MINE_STRETCH_L_ID,
-    MINE_STRETCH_R_ID,
     MINE_PUSH_LEFT_ID,
     MINE_PUSH_RIGHT_ID,
-};                    
+    MINE_STRETCH_L_ID,
+    MINE_STRETCH_R_ID,
+    
+};                      
 
 typedef enum
 {
@@ -118,12 +119,11 @@ public:
     mine_mode_e last_mine_mode; //底盘上次控制状态机
 
     Mine_motor mine_motive_motor[4];
-    int32_t stretch_moto_start_angle[2];
+    fp32 stretch_moto_start_angle[4];
 
     int8_t motor_status[2];
 
-    bool_t photo_flag_yaw;
-    int8_t photo_flag_pitch; 
+    uint8_t photo_flag_pitch; 
 
     
     
@@ -190,6 +190,11 @@ class PhotoSpin{//图传舵机数据结构体
 
         void output();                  //控制图传舵机
 
+        uint8_t yaw_flag;
+
+        uint8_t pitch_flag;
+
+        bool_t sucker_flag;
 };
 
 extern PhotoSpin photospin;

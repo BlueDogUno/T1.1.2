@@ -196,7 +196,7 @@ void Catch::behaviour_mode_set()
     {
         catch_behaviour_mode = CATCH_HOLD;
     }
-    if (switch_is_down(catch_RC->rc.s[0])) //右拨杆下
+    if (switch_is_down(catch_RC->rc.s[0])) //左拨杆下
     {
         catch_behaviour_mode = CATCH_ZERO_FORCE;
     }

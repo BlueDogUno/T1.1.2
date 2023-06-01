@@ -58,6 +58,7 @@ void Communicate::run()
     uint16_t temp_v;
     int8_t s0,s1,auto_mode;
     bool_t stretch_state,yaw_state,roll_state,flip_state;
+    bool_t temp_sucker;
 
 
     temp_ch0 = remote_control.rc_ctrl.rc.ch[0];
@@ -67,13 +68,15 @@ void Communicate::run()
     temp_v = remote_control.rc_ctrl.key.v;
     s0 = remote_control.rc_ctrl.rc.s[0];
     s1 = remote_control.rc_ctrl.rc.s[1];
+    temp_sucker = photospin.sucker_flag;
+
 
 
 
 
     can_receive.send_rc_board_com(temp_ch0, temp_ch2, temp_ch3, temp_v);
     can_receive.send_high_state_com( stretch_state ,  yaw_state,  roll_state,  flip_state);
-    can_receive.send_ss_state_com( s0,s1,temp_ch1);
+    can_receive.send_ss_state_com( s0,s1,temp_ch1,temp_sucker);
     can_receive.send_lift_auto_mode( auto_mode);
 
 }

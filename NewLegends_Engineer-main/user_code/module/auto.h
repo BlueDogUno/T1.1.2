@@ -12,8 +12,8 @@
 
 // 自动模式各行为伸爪机构的相对长度
 #define STRETCH_INIT_LEN 0.0f
-#define STRETCH_SKY_LEN 0.0f
-#define STRETCH_STANDARD_LEN 0.0f
+#define STRETCH_SKY_LEN 400.0f
+#define STRETCH_STANDARD_LEN 400.0f
 #define STRETCH_GROUND_LEN 0.0f
 #define STRETCH_DELIVERY_LEN 0.0f
 
